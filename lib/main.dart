@@ -1,7 +1,13 @@
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:lasttime/widget/new_lasttime.dart';
+import 'package:outline_search_bar/outline_search_bar.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
   runApp(MyApp());
 }
 
@@ -34,14 +40,30 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
+      body: Container(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              '',
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Container(
+                  width: 200,
+                  child: DropdownSearch<String>(
+                    maxHeight: 150,
+                    mode: Mode.MENU,
+                    items: ["งานบ้าน", "งานบ้าน", "งานบ้าน"],
+                  ),
+                )
+              ],
             ),
-            Text(''),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  'hello',
+                ),
+              ],
+            ),
           ],
         ),
       ),

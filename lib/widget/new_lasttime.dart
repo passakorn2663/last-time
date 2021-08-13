@@ -35,7 +35,14 @@ class _NewLastTime extends State<NewLastTime> {
           ),
           TextFormField(
             initialValue: '',
-          )
+            decoration: InputDecoration(
+                icon: Icon(Icons.person),
+                hintText: 'Enter your job',
+                labelText: 'Job'),
+          ),
+          SizedBox(
+            height: 5,
+          ),
         ],
       ),
     );
