@@ -16,7 +16,7 @@ class _LastTimePageState extends State<LastTimePage> {
   List<String> categoryList = ["Any", "งาน1", "งาน2"];
   List<String> sortList = ["Newest", "Oldest"];
 
-  String? currentCategory = "Any";
+  String? currentCategory;
   String? currentSort;
 
   @override
@@ -58,6 +58,9 @@ class _LastTimePageState extends State<LastTimePage> {
                       );
                     }).toList(),
                   ),
+                ),
+                SizedBox(
+                  width: 5,
                 ),
                 Container(
                   width: 100,
@@ -152,14 +155,23 @@ class _LastTimePageState extends State<LastTimePage> {
                 }
                 _list[current] = startItem;
               }
+
+              // _list.forEach((e) {
+              //   print(e.title);
+              // });
+              // setState(() {
+              //   resorting = true;
+              // });
+              // await box.clear();
+              // box.addAll(_list);
+              // setState(() {
+              //   resorting = false;
+              // });
             }));
   }
 
   void sortingByDropDown(List<LastTime> lastTimeList) {
-    print(currentSort);
-    print(currentCategory);
-
-    if (currentCategory != null && currentCategory != 'None') {
+    if (currentCategory != null && currentCategory != 'Any') {
       lastTimeList.removeWhere((last) => last.category != currentCategory);
     }
     if (currentSort == sortList[0]) {
@@ -175,24 +187,26 @@ Widget buildLastTime(
   LastTime lastTime,
 ) {
   final date = DateFormat.yMMMd().format(lastTime.lastTime);
-
+  final time = DateFormat.Hm().format(lastTime.lastTime);
   return Container(
+    padding: EdgeInsets.all(10.0),
     key: ValueKey(lastTime),
-    // height: 150,
-    // width: 100,
     child: Card(
       color: Colors.white,
       child: ExpansionTile(
-        tilePadding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+        tilePadding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
         title: Text(
           lastTime.title,
           maxLines: 2,
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
         ),
-        subtitle: Text(date),
-        trailing: Text(
-          lastTime.category,
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+        subtitle: Text(lastTime.category,
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+        trailing: Column(
+          children: [
+            Text(date),
+            Text(time),
+          ],
         ),
       ),
     ),

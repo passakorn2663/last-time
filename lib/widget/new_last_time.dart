@@ -18,6 +18,7 @@ class _NewLastTime extends State<NewLastTime> {
       LastTime(category: 'งาน1', lastTime: DateTime.now());
 
   DateTime lastTime = DateTime.now();
+  final List<String> selectcCategoryList = ['งาน1', 'งาน2'];
 
   @override
   Widget build(BuildContext context) {
@@ -64,8 +65,8 @@ class _NewLastTime extends State<NewLastTime> {
             newLastTime.category = newValue!;
           });
         },
-        items: <String>['งานบ้าน', 'งาน1']
-            .map<DropdownMenuItem<String>>((String value) {
+        items:
+            selectcCategoryList.map<DropdownMenuItem<String>>((String value) {
           return DropdownMenuItem<String>(
             value: value,
             child: Text(value),
