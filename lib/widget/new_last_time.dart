@@ -15,10 +15,10 @@ class NewLastTime extends StatefulWidget {
 class _NewLastTime extends State<NewLastTime> {
   final formKey = GlobalKey<FormState>();
   final LastTime newLastTime =
-      LastTime(category: 'งาน1', lastTime: DateTime.now());
+      LastTime(category: 'Work', lastTime: DateTime.now());
 
   DateTime lastTime = DateTime.now();
-  final List<String> selectcCategoryList = ['งาน1', 'งาน2'];
+  final List<String> selectcCategoryList = ['Work', 'Play', 'Other'];
 
   @override
   Widget build(BuildContext context) {

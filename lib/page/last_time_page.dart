@@ -13,7 +13,7 @@ class LastTimePage extends StatefulWidget {
 }
 
 class _LastTimePageState extends State<LastTimePage> {
-  List<String> categoryList = ["Any", "งาน1", "งาน2"];
+  List<String> categoryList = ["Any", "Work", "Play", "Other"];
   List<String> sortList = ["Newest", "Oldest"];
 
   String? currentCategory;
@@ -189,12 +189,12 @@ Widget buildLastTime(
   final date = DateFormat.yMMMd().format(lastTime.lastTime);
   final time = DateFormat.Hm().format(lastTime.lastTime);
   return Container(
-    padding: EdgeInsets.all(10.0),
+    padding: EdgeInsets.only(left: 5),
     key: ValueKey(lastTime),
     child: Card(
       color: Colors.white,
-      child: ExpansionTile(
-        tilePadding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+      child: ListTile(
+        leading: Center(child: _icon(lastTime)),
         title: Text(
           lastTime.title,
           maxLines: 2,
@@ -202,13 +202,25 @@ Widget buildLastTime(
         ),
         subtitle: Text(lastTime.category,
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-        trailing: Column(
-          children: [
-            Text(date),
-            Text(time),
-          ],
+        trailing: Container(
+          padding: EdgeInsets.only(top: 10, right: 20.0),
+          child: Column(
+            children: [
+              Text(date),
+              Text(time),
+            ],
+          ),
         ),
       ),
     ),
   );
+}
+
+Icon _icon(LastTime lastime) {
+  if (lastime.category == 'Work') {
+    return Icon(Icons.work);
+  } else if (lastime.category == 'Play')
+    return Icon(Icons.sentiment_satisfied_rounded);
+  else
+    return Icon(Icons.settings_accessibility_sharp);
 }
