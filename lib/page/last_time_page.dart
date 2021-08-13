@@ -6,6 +6,7 @@ import 'package:lasttime/boxes.dart';
 import 'package:lasttime/model/last_time.dart';
 import 'package:lasttime/widget/new_last_time.dart';
 import 'package:intl/intl.dart';
+import 'package:lasttime/widget/time_stamp.dart';
 
 class LastTimePage extends StatefulWidget {
   @override
@@ -43,6 +44,7 @@ class _LastTimePageState extends State<LastTimePage> {
                 Container(
                   width: 100,
                   child: DropdownButton<String>(
+                    hint: Text('Category'),
                     value: currentCategory,
                     style: const TextStyle(color: Colors.blue),
                     onChanged: (String? value) {
@@ -65,6 +67,7 @@ class _LastTimePageState extends State<LastTimePage> {
                 Container(
                   width: 100,
                   child: DropdownButton<String>(
+                    hint: Text('Time'),
                     value: currentSort,
                     style: const TextStyle(color: Colors.blue),
                     onChanged: (String? value) {
@@ -155,18 +158,6 @@ class _LastTimePageState extends State<LastTimePage> {
                 }
                 _list[current] = startItem;
               }
-
-              // _list.forEach((e) {
-              //   print(e.title);
-              // });
-              // setState(() {
-              //   resorting = true;
-              // });
-              // await box.clear();
-              // box.addAll(_list);
-              // setState(() {
-              //   resorting = false;
-              // });
             }));
   }
 
@@ -175,9 +166,9 @@ class _LastTimePageState extends State<LastTimePage> {
       lastTimeList.removeWhere((last) => last.category != currentCategory);
     }
     if (currentSort == sortList[0]) {
-      lastTimeList.sort((a, b) => b.lastTime.compareTo(a.lastTime));
+      lastTimeList.sort((a, b) => b.lastTime.last.compareTo(a.lastTime.last));
     } else if (currentSort == sortList[1]) {
-      lastTimeList.sort((a, b) => a.lastTime.compareTo(b.lastTime));
+      lastTimeList.sort((a, b) => a.lastTime.last.compareTo(b.lastTime.last));
     }
   }
 
@@ -205,7 +196,7 @@ class _LastTimePageState extends State<LastTimePage> {
                         style: TextStyle(color: Colors.blue),
                       ),
                       onPressed: () {
-                        lastTime.lastTime = DateTime.now();
+                        lastTime.lastTime.last = DateTime.now();
                         lastTime.save();
                         Navigator.of(context).pop();
                       }),
@@ -220,8 +211,8 @@ class _LastTimePageState extends State<LastTimePage> {
     BuildContext context,
     LastTime lastTime,
   ) {
-    final date = DateFormat.yMMMd().format(lastTime.lastTime);
-    final time = DateFormat.Hm().format(lastTime.lastTime);
+    final date = DateFormat.yMMMd().format(lastTime.lastTime.last);
+    final time = DateFormat.Hm().format(lastTime.lastTime.last);
     return Container(
       height: 75,
       padding: EdgeInsets.all(5),
@@ -234,7 +225,6 @@ class _LastTimePageState extends State<LastTimePage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Text(
                     lastTime.title,
@@ -243,28 +233,61 @@ class _LastTimePageState extends State<LastTimePage> {
                   Text(lastTime.category, style: TextStyle(fontSize: 16))
                 ],
               ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(date),
-                  Text(time),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text(date),
+                      Text(time),
+                    ],
+                  ),
+                  Container(
+                      child: ClipOval(
+                    child: Material(
+                      elevation: 5,
+                      color: Colors.white, // Button color
+                      child: InkWell(
+                        onTap: () {
+                          _stampLastTime(lastTime);
+                        },
+                        child: SizedBox(
+                            width: 40,
+                            height: 40,
+                            child: Icon(
+                              Icons.beenhere_sharp,
+                              color: Colors.blue,
+                            )),
+                      ),
+                    ),
+                  )),
+                  Container(
+                      child: ClipOval(
+                    child: Material(
+                      elevation: 5,
+                      color: Colors.white, // Button color
+                      child: InkWell(
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) => TimeStamp(lastTime),
+                          );
+                        },
+                        child: SizedBox(
+                            width: 40,
+                            height: 40,
+                            child: Icon(
+                              Icons.history_edu,
+                              color: Colors.blue,
+                            )),
+                      ),
+                    ),
+                  )),
                 ],
               ),
             ],
           ),
-          trailing: Container(
-              child: ClipOval(
-            child: Material(
-              color: Colors.blue, // Button color
-              child: InkWell(
-                onTap: () {
-                  _stampLastTime(lastTime);
-                },
-                child: SizedBox(
-                    width: 30, height: 30, child: Icon(Icons.beenhere)),
-              ),
-            ),
-          )),
         ),
       ),
     );

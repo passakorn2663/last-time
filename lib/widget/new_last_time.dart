@@ -14,8 +14,7 @@ class NewLastTime extends StatefulWidget {
 
 class _NewLastTime extends State<NewLastTime> {
   final formKey = GlobalKey<FormState>();
-  final LastTime newLastTime =
-      LastTime(category: 'Work', lastTime: DateTime.now());
+  final LastTime newLastTime = LastTime(category: 'Work', lastTime: []);
 
   DateTime lastTime = DateTime.now();
   final List<String> selectcCategoryList = ['Work', 'Play', 'Other'];
@@ -52,7 +51,7 @@ class _NewLastTime extends State<NewLastTime> {
         ),
         onChanged: (value) {
           newLastTime.title = value;
-          newLastTime.lastTime = DateTime.now();
+          newLastTime.lastTime.add(DateTime.now());
         },
       );
 
@@ -73,26 +72,6 @@ class _NewLastTime extends State<NewLastTime> {
           );
         }).toList(),
       );
-
-  // Widget buildCategory2() => DropdownSearch<String>(
-  //       maxHeight: 150,
-  //       mode: Mode.MENU,
-  //       onSaved: (String? newValue) {
-  //         newLastTime.category = newValue!;
-  //       } ,
-  //       it
-  //       value: newLastTime.category,
-  //       style: const TextStyle(color: Colors.deepPurple),
-  //       isExpanded: true,
-
-  //       items: <String>['งานบ้าน', 'งาน1']
-  //           .map<DropdownMenuItem<String>>((String value) {
-  //         return DropdownMenuItem<String>(
-  //           value: value,
-  //           child: Text(value),
-  //         );
-  //       }).toList(),
-  //     );
 
   Widget buildCancelButton(BuildContext context) => TextButton(
         child: Text('Cancel'),

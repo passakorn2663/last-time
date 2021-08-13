@@ -19,7 +19,7 @@ class LastTimeAdapter extends TypeAdapter<LastTime> {
     return LastTime(
       title: fields[0] as String,
       category: fields[1] as String,
-      lastTime: fields[2] as DateTime,
+      lastTime: (fields[2] as List).cast<DateTime>(),
     );
   }
 

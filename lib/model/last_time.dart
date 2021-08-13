@@ -8,7 +8,7 @@ class LastTime extends HiveObject {
   @HiveField(1)
   late String category;
   @HiveField(2)
-  late DateTime lastTime;
+  late List<DateTime> lastTime;
 
   LastTime({this.title = '', required this.category, required this.lastTime});
 }
