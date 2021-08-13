@@ -51,7 +51,7 @@ class _LastTimePageState extends State<LastTimePage> {
                     builder: (context, box, _) {
                       final lasttimes = box.values.toList().cast<LastTime>();
 
-                      return Container(height: 50, width: 50, child: Card());
+                      return buildContent(lasttimes);
                     }),
               ],
             ),
@@ -59,20 +59,30 @@ class _LastTimePageState extends State<LastTimePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        tooltip: 'Add your last time',
         child: Icon(Icons.add),
-        onPressed: () {
-          NewLastTime(
+        onPressed: () => showDialog(
+          context: context,
+          builder: (context) => NewLastTime(
             onClickedDone: addLastTime,
-          );
-        },
+          ),
+        ),
       ),
     );
   }
 
   Widget buildContent(List<LastTime> lasttimes) {
+    if (lasttimes.isEmpty) {
+      return Center(
+        child: Text(
+          'No Jobs yet!',
+          style: TextStyle(fontSize: 24),
+        ),
+      );
+    }
     return Column(
       children: [
+        Text('hello'),
+        SizedBox(height: 5),
         Expanded(
           child: ListView.builder(
             padding: EdgeInsets.all(5),
@@ -95,36 +105,34 @@ Widget buildLastTime(
 ) {
   final date = DateFormat.yMMMd().format(lastTime.lastTime);
 
-  return Card(
-    color: Colors.white,
-    child: ExpansionTile(
-      tilePadding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-      title: Text(
-        lastTime.title,
-        maxLines: 2,
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-      ),
-      subtitle: Text(date),
-      trailing: Text(
-        lastTime.category,
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+  return Container(
+    height: 50,
+    width: 100,
+    child: Card(
+      color: Colors.white,
+      child: ExpansionTile(
+        tilePadding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+        title: Text(
+          lastTime.title,
+          maxLines: 2,
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+        ),
+        subtitle: Text(date),
+        trailing: Text(
+          lastTime.category,
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+        ),
       ),
     ),
   );
 }
 
-Future addLastTime(String title, String category, DateTime lastTime) async {
-  final lasttime = LastTime(category: '', lastTime: DateTime.now())
+Future addLastTime(String title, /*String category,*/ DateTime lastTime) async {
+  final lasttime = LastTime()
     ..title = title
-    ..category = category
+    // ..category = category
     ..lastTime = DateTime.now();
 
   final box = Boxes.getLastTime();
   box.add(lasttime);
-  //box.put('mykey', transaction);
-
-  // final mybox = Boxes.getTransactions();
-  // final myTransaction = mybox.get('key');
-  // mybox.values;
-  // mybox.keys;
 }

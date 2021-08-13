@@ -4,10 +4,9 @@ part 'last_time.g.dart';
 @HiveType(typeId: 0)
 class LastTime extends HiveObject {
   @HiveField(0)
-  String title;
+  late String title;
   @HiveField(1)
-  String category;
+  late String category;
   @HiveField(2)
-  DateTime lastTime;
-  LastTime({this.title = '', required this.category, required this.lastTime});
+  late DateTime lastTime;
 }

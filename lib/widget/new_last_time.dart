@@ -5,8 +5,7 @@ import 'package:lasttime/model/last_time.dart';
 
 class NewLastTime extends StatefulWidget {
   final LastTime? lastTime;
-  final Function(String title, String category, DateTime lasttime)
-      onClickedDone;
+  final Function(String name) onClickedDone;
 
   NewLastTime({
     Key? key,
@@ -21,6 +20,7 @@ class NewLastTime extends StatefulWidget {
 }
 
 class _NewLastTime extends State<NewLastTime> {
+  final formKey = GlobalKey<FormState>();
   final titleController = TextEditingController();
   final categoryController = TextEditingController();
 
@@ -49,36 +49,56 @@ class _NewLastTime extends State<NewLastTime> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        height: 150,
-        width: 50,
-        padding: EdgeInsets.all(5.0),
-        child: Column(children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('Add Last Time'),
-            ],
-          ),
-          SizedBox(
-            height: 5,
-          ),
-          TextFormField(
-            decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                icon: Icon(Icons.person),
-                hintText: 'Enter your job',
-                labelText: 'Job'),
-            validator: (title) =>
-                title != null && title.isEmpty ? 'Enter Job' : null,
-          ),
-          SizedBox(
-            height: 5,
-          ),
-          Text(''),
-          SizedBox(
-            height: 5,
-          ),
-        ]));
+    return AlertDialog(
+      title: Text('Add Last Time'),
+      content: Form(
+          key: formKey,
+          child: SingleChildScrollView(
+            child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+              SizedBox(
+                height: 5,
+              ),
+              buildTitle(),
+              SizedBox(
+                height: 5,
+              ),
+            ]),
+          )),
+      actions: <Widget>[
+        buildCancelButton(context),
+        buildAddButton(context),
+      ],
+    );
+  }
+
+  Widget buildTitle() => TextFormField(
+        controller: titleController,
+        decoration: InputDecoration(
+          border: OutlineInputBorder(),
+          hintText: 'Enter job',
+        ),
+        validator: (title) =>
+            title != null && title.isEmpty ? 'Enter job' : null,
+      );
+
+  Widget buildCancelButton(BuildContext context) => TextButton(
+        child: Text('Cancel'),
+        onPressed: () => Navigator.of(context).pop(),
+      );
+
+  Widget buildAddButton(BuildContext context) {
+    return TextButton(
+      child: Text('Add'),
+      onPressed: () async {
+        final isValid = formKey.currentState!.validate();
+
+        if (isValid) {
+          final title = titleController.text;
+          widget.onClickedDone(title);
+
+          Navigator.of(context).pop();
+        }
+      },
+    );
   }
 }

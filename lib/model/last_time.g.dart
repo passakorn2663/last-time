@@ -16,23 +16,12 @@ class LastTimeAdapter extends TypeAdapter<LastTime> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return LastTime(
-      title: fields[0] as String,
-      category: fields[1] as String,
-      lastTime: fields[2] as DateTime,
-    );
+    return LastTime();
   }
 
   @override
   void write(BinaryWriter writer, LastTime obj) {
-    writer
-      ..writeByte(3)
-      ..writeByte(0)
-      ..write(obj.title)
-      ..writeByte(1)
-      ..write(obj.category)
-      ..writeByte(2)
-      ..write(obj.lastTime);
+    writer..writeByte(0);
   }
 
   @override
