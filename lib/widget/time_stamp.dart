@@ -25,14 +25,17 @@ class _TimeStamp extends State<TimeStamp> {
                 padding: EdgeInsets.only(top: 10),
                 child: Center(
                   child: Text(
-                    widget.lastTime.title + 'Timep Stamp',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    widget.lastTime.title + ' Timep Stamp',
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.blue),
                   ),
                 ),
               ),
               Expanded(
                 child: ListView.builder(
-                    itemCount: widget.lastTime.lastTime.length,
+                    itemCount: timeLength,
                     itemBuilder: (context, index) {
                       return Container(
                         margin: EdgeInsets.all(5),
@@ -44,6 +47,18 @@ class _TimeStamp extends State<TimeStamp> {
                       );
                     }),
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      ;
+                    },
+                    child: Text('OK'),
+                  )
+                ],
+              )
             ],
           )),
     );
