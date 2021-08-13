@@ -2,12 +2,18 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:lasttime/widget/new_lasttime.dart';
+import 'package:lasttime/model/last_time.dart';
+import 'package:lasttime/widget/new_last_time.dart';
 import 'package:outline_search_bar/outline_search_bar.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
+
+  Hive.registerAdapter(LastTimeAdapter());
+
+  await Hive.openBox<LastTime>('last_time');
+
   runApp(MyApp());
 }
 
@@ -41,6 +47,7 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Container(
+        padding: EdgeInsets.all(10.0),
         child: Column(
           children: [
             Row(
@@ -57,11 +64,18 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
             ),
             Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  'hello',
+                  'Jobs',
                 ),
+                // ListView.builder(
+                //     itemCount: 5,
+                //     itemBuilder: (context, index) {
+                //       return Container(
+                //           height: 50,
+                //           width: 50,
+                //           child: Card(child: Text('จ๊ะเอ๋')));
+                //     })
               ],
             ),
           ],
