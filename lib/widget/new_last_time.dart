@@ -9,6 +9,14 @@ class NewLastTime extends StatefulWidget {
 }
 
 class _NewLastTime extends State<NewLastTime> {
+  
+  final titleController = TextEditingController();
+  final categoryController = TextEditingController();
+
+  DateTime lastTime = DateTime.now();
+  _NewLastTime();
+
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -20,14 +28,7 @@ class _NewLastTime extends State<NewLastTime> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Last Time'),
-              FloatingActionButton(
-                mini: true,
-                child: Icon(Icons.close),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              )
+              Text('Add Last Time'),
             ],
           ),
           SizedBox(
@@ -36,9 +37,11 @@ class _NewLastTime extends State<NewLastTime> {
           TextFormField(
             initialValue: '',
             decoration: InputDecoration(
+                border: OutlineInputBorder(),
                 icon: Icon(Icons.person),
                 hintText: 'Enter your job',
                 labelText: 'Job'),
+          validator: (title) =,
           ),
           SizedBox(
             height: 5,
