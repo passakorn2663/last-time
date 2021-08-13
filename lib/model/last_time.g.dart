@@ -16,7 +16,11 @@ class LastTimeAdapter extends TypeAdapter<LastTime> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return LastTime();
+    return LastTime(
+      title: fields[0] as String,
+      category: fields[1] as String,
+      lastTime: fields[2] as DateTime,
+    );
   }
 
   @override
