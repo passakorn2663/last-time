@@ -180,47 +180,111 @@ class _LastTimePageState extends State<LastTimePage> {
       lastTimeList.sort((a, b) => a.lastTime.compareTo(b.lastTime));
     }
   }
-}
 
-Widget buildLastTime(
-  BuildContext context,
-  LastTime lastTime,
-) {
-  final date = DateFormat.yMMMd().format(lastTime.lastTime);
-  final time = DateFormat.Hm().format(lastTime.lastTime);
-  return Container(
-    padding: EdgeInsets.only(left: 5),
-    key: ValueKey(lastTime),
-    child: Card(
-      color: Colors.white,
-      child: ListTile(
-        leading: Center(child: _icon(lastTime)),
-        title: Text(
-          lastTime.title,
-          maxLines: 2,
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-        ),
-        subtitle: Text(lastTime.category,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-        trailing: Container(
-          padding: EdgeInsets.only(top: 10, right: 20.0),
-          child: Column(
+  void _stampLastTime(LastTime lastTime) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Stamp time on this job?'),
+            actions: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                      child: Text('No'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      }),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  TextButton(
+                      child: Text(
+                        'Yes',
+                        style: TextStyle(color: Colors.blue),
+                      ),
+                      onPressed: () {
+                        lastTime.lastTime = DateTime.now();
+                        lastTime.save();
+                        Navigator.of(context).pop();
+                      }),
+                ],
+              )
+            ],
+          );
+        });
+  }
+
+  Widget buildLastTime(
+    BuildContext context,
+    LastTime lastTime,
+  ) {
+    final date = DateFormat.yMMMd().format(lastTime.lastTime);
+    final time = DateFormat.Hm().format(lastTime.lastTime);
+    return Container(
+      height: 75,
+      padding: EdgeInsets.all(5),
+      key: ValueKey(lastTime),
+      child: Card(
+        color: Colors.white,
+        child: ListTile(
+          leading: _icon(lastTime),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(date),
-              Text(time),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text(
+                    lastTime.title,
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  ),
+                  Text(lastTime.category, style: TextStyle(fontSize: 16))
+                ],
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text(date),
+                  Text(time),
+                ],
+              ),
             ],
           ),
+          trailing: Container(
+              child: ClipOval(
+            child: Material(
+              color: Colors.blue, // Button color
+              child: InkWell(
+                onTap: () {
+                  _stampLastTime(lastTime);
+                },
+                child: SizedBox(
+                    width: 30, height: 30, child: Icon(Icons.beenhere)),
+              ),
+            ),
+          )),
         ),
       ),
-    ),
-  );
+    );
+  }
 }
 
 Icon _icon(LastTime lastime) {
   if (lastime.category == 'Work') {
-    return Icon(Icons.work);
+    return Icon(
+      Icons.work,
+      color: Colors.blue,
+    );
   } else if (lastime.category == 'Play')
-    return Icon(Icons.sentiment_satisfied_rounded);
+    return Icon(
+      Icons.sentiment_satisfied_rounded,
+      color: Colors.blue,
+    );
   else
-    return Icon(Icons.settings_accessibility_sharp);
+    return Icon(
+      Icons.settings_accessibility_sharp,
+      color: Colors.blue,
+    );
 }
